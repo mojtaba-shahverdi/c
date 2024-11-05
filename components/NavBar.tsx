@@ -10,7 +10,11 @@ import {
 import React, { useEffect, useState } from "react";
 import styles from "../styles/NavBar.module.css";
 import Link from "next/link";
-import { buildingsIds, STAKING_CONTRACT_ADDRESS, TOKEN_CONTRACT_ADDRESS } from "../constants/contracts";
+import {
+  buildingsIds,
+  STAKING_CONTRACT_ADDRESS,
+  TOKEN_CONTRACT_ADDRESS,
+} from "../constants/contracts";
 import { useRouter } from "next/router";
 import { FaBuilding, FaCity, FaMap } from "react-icons/fa6";
 import { MdHome, MdMoney, MdShield, MdVilla } from "react-icons/md";
@@ -38,16 +42,16 @@ const NavBar = () => {
   };
 
   const checkOwnedTavern = () => {
-      if(stakedTokens && stakedTokens[0].length > 0){
-        let _hasTavern = false;
-        stakedTokens[0].map((token: BigNumber) => {
-          if(token.toNumber() === buildingsIds.Tavern){
-            _hasTavern = true;
-          }
-        })
-        setHasTavern(_hasTavern);
-      }
-  }
+    if (stakedTokens && stakedTokens[0].length > 0) {
+      let _hasTavern = false;
+      stakedTokens[0].map((token: BigNumber) => {
+        if (token.toNumber() === buildingsIds.Tavern) {
+          _hasTavern = true;
+        }
+      });
+      setHasTavern(_hasTavern);
+    }
+  };
 
   useEffect(() => {
     if (!isLoggedIn && !isLoading) {
@@ -61,7 +65,9 @@ const NavBar = () => {
     }
   }, [showConnectEmbed, isLoggedIn]);
 
-  useEffect(() => {checkOwnedTavern()}, [stakedTokens]);
+  useEffect(() => {
+    checkOwnedTavern();
+  }, [stakedTokens]);
 
   return (
     <div className={styles.full_with}>
@@ -140,6 +146,14 @@ const NavBar = () => {
               </p>
             )}
             <ConnectWallet className="web3_component" />
+            {address ? (
+              <button className="wallet-button">
+                {address.slice(0, 6) + "..." + address.slice(-4)}{" "}
+                {/* Display shortened address */}
+              </button>
+            ) : (
+              <ConnectWallet className="web3_component" />
+            )}
           </div>
         </div>
       )}
